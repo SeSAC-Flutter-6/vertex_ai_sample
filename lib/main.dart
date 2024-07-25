@@ -1,14 +1,12 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_vertexai/firebase_vertexai.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:vertexai_sample/data/repository/mock_recipe_repository_impl.dart';
 import 'package:vertexai_sample/presentation/main_screen.dart';
 
 import 'data/repository/recipe_repository_impl.dart';
-import 'presentation/main_view_model.dart';
-
-import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'presentation/main_view_model.dart';
 
 void main() async {
   await Firebase.initializeApp(
@@ -34,6 +32,10 @@ class MyApp extends StatelessWidget {
         create: (_) => MainViewModel(
           recipeRepository: RecipeRepositoryImpl(
             model: FirebaseVertexAI.instance.generativeModel(
+              generationConfig: GenerationConfig(
+                responseMimeType: 'application/json',
+                temperature: 0,
+              ),
               model: 'gemini-1.5-flash',
             ),
           ),
